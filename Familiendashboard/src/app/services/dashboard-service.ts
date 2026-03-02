@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { NotesWidget } from '../widgets/notes-widget/notes-widget';
 import { Widget } from '../interfaces/widget';
 import { ScheduleWidget } from '../widgets/schedule-widget/schedule-widget';
@@ -44,17 +44,29 @@ const OPTIONAL_WIDGETS: Widget[] = [
 
 @Injectable()
 export class DashboardService {
-  widgets = signal<Widget[]>([...OPTIONAL_WIDGETS]);
+  widgets = signal<Widget[]>([...MANDATORY_WIDGETS, ...OPTIONAL_WIDGETS]);
 
-  addedWidgets = signal<Widget[]>([...MANDATORY_WIDGETS]);
+  addedWidgets = signal<Widget[]>([]);
 
   widgetsToAdd = computed(() => {
     const addedIds = this.addedWidgets().map(w => w.id);
     return this.widgets().filter(w => !addedIds.includes(w.id));
   });
 
+
+
   addWidget(widget: Widget) {
     this.addedWidgets.set([...this.addedWidgets(), { ...widget }]);
+  }
+
+  updateWidgetSize(id: number, size: Pick<Widget, 'rows' | 'cols'>) {
+    this.addedWidgets.update(widgets =>
+      widgets.map(widget =>
+        widget.id === id
+          ? { ...widget, ...size }
+          : widget
+      )
+    );
   }
 
   moveWidgetToRight(id: number) {
@@ -86,5 +98,28 @@ export class DashboardService {
     }
   }
 
-  constructor() {}
+  fetchWidgets() {
+    const WidgetsAsString = localStorage.getItem('dashboardWidgets');
+    if (WidgetsAsString) {
+      const widgets = JSON.parse(WidgetsAsString) as Widget[];
+     widgets.forEach(widget => {
+      const content = this.widgets().find(w => w.id === widget.id)?.content ;
+      if(content){
+        widget.content = content;
+      }
+    })
+      this.addedWidgets.set(widgets);
+  }
+  }
+
+  constructor() {
+      this.fetchWidgets();
+  }
+
+  saveWidgets = effect(()=>{
+    const widgetsWithoutContent:Partial<Widget>[] = this.addedWidgets().map(w => ({... w}));
+    widgetsWithoutContent.forEach(w => {delete w.content});
+    localStorage.setItem('dashboardWidgets', JSON.stringify(widgetsWithoutContent));
+  })
+  
 }

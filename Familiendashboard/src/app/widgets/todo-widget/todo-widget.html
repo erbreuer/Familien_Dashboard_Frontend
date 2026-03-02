@@ -1,23 +1,23 @@
 <div class="flex flex-col h-full gap-2 overflow-hidden">
 
   <div class="flex gap-2">
-    <input class="input input-sm flex-1" placeholder="Neue Aufgabe..." />
-    <button class="btn btn-sm btn-primary px-3">+</button>
+    <input class="input input-sm flex-1" placeholder="Neue Aufgabe..." #newTodoInput />
+    <button class="btn btn-sm btn-primary px-3" (click)="addTodoItem(newTodoInput.value); newTodoInput.value = '';">+</button>
   </div>
 
   <ul class="flex flex-col gap-1 overflow-y-auto flex-1">
-    <li class="flex items-center gap-2 p-1 rounded hover:bg-base-200 transition-colors">
-      <input type="checkbox" class="checkbox checkbox-sm" />
-      <span class="text-sm">Aufgabe 1</span>
-    </li>
-    <li class="flex items-center gap-2 p-1 rounded hover:bg-base-200 transition-colors">
-      <input type="checkbox" class="checkbox checkbox-sm" checked />
-      <span class="text-sm line-through opacity-50">Aufgabe 2</span>
-    </li>
-    <li class="flex items-center gap-2 p-1 rounded hover:bg-base-200 transition-colors">
-      <input type="checkbox" class="checkbox checkbox-sm" />
-      <span class="text-sm">Aufgabe 3</span>
-    </li>
+  @for (todo of todoItems(); track $index) {
+      <li class="flex items-center gap-2">
+        <input type="checkbox" [checked]="todo.completed" class="checkbox" (change)="todo.completed = !todo.completed"/>
+        <span [class.line-through]="todo.completed">{{ todo.text }}</span>
+        <button class="btn btn-xs btn-error ml-auto" (click)="removeTodoItem(todo.id)">entfernen</button>
+      </li>
+    } @empty {
+      <li class="text-center text-sm opacity-60">
+        Keine Aufgaben vorhanden.
+      </li>
+
+    }
   </ul>
 
 </div>
