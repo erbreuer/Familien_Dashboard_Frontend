@@ -1,0 +1,23 @@
+services:
+  angular-dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "4200:4200"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    tty: true
+    stdin_open: true
+
+  angular-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      target: production
+    ports:
+      - "8080:80"
