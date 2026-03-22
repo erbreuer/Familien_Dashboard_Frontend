@@ -10,6 +10,11 @@ import { Router } from "@angular/router";
 })
 export class HeaderComponent {
     constructor(private router: Router) {}
+
+goToProfile() {
+this.router.navigate(['/profile']);
+}
+
 logout() {
 //hier logout mit apiService
 localStorage.removeItem('accessToken');

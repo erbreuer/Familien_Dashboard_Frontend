@@ -1,0 +1,44 @@
+<div class="flex h-screen items-center justify-center bg-base-200">
+
+    <div class="absolute top-4 left-4">
+        <app-theme-switch-component></app-theme-switch-component>
+    </div>
+
+    <div class="card w-full max-w-lg bg-base-100 shadow-xl">
+        <div class="card-body">
+            <h2
+                class="card-title text-3xl font-bold mb-2 text-base-content">Geben
+                sie ihren Beitrittscode ein</h2>
+            <p class="text-base-content mb-6">Der Beitrittscode wurde von einem
+                Familienmitglied erstellt und ermöglicht es dir, der Familie
+                beizutreten.</p>
+            @if(errorMessage) {
+            <div class="alert alert-error mb-4">
+                <span>{{ errorMessage }}</span>
+            </div>
+            }
+
+            <div class="flex flex-col gap-4">
+                <input
+                    id="familyCode"
+                    type="string"
+                    placeholder="Enter your family code"
+                    class="input input-bordered w-full" />
+                    <button
+                        (click)="tryJoinFamily()"
+                        class="btn btn-primary">
+                        Familie beitreten
+                    </button>
+
+                <div class="divider"></div>
+
+                <div class="text-center">
+                    <button
+                        (click)="onCancel()"
+                        class="link link-hover text-sm text-base-content font-semibold">
+                        Zurück zum Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
