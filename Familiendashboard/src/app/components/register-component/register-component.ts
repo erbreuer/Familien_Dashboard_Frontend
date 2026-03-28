@@ -36,8 +36,7 @@ export class RegisterComponent {
     this.authService.register(credentials).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
-        this.authService.storeToken(response.access_token);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/family-selection']);
       },
       error: (error) => {
         console.error('Registration failed:', error);

@@ -16,10 +16,12 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
+  errorMessage = '';
+
 
 
   loginForm = this.fb.nonNullable.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
   ngOnInit() {
@@ -31,26 +33,24 @@ export class LoginComponent {
 
 
   submit() {
-   
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
-/*
-    const payload={
-      email: this.loginForm.controls.email.value,
-      password: this.loginForm.controls.password.value
-    }
+
+    this.errorMessage = '';
+    const payload = this.loginForm.getRawValue();
+
     this.authService.login(payload).subscribe({
-      next: (tokens) => {
-        this.authService.storeTokens(tokens);
+      next: (response) => {
+   
         this.router.navigate(['/dashboard']);
       },
-      error: (error: any) => {
+      error: (error: { error?: { error?: string } }) => {
         console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
+        this.errorMessage = error.error?.error ?? 'Login fehlgeschlagen. Bitte pruefe deine Daten.';
       }
     });
-    */this.router.navigate(['/dashboard']);
   }
 }

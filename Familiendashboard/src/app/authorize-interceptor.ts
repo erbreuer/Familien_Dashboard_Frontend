@@ -1,42 +1,30 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AuthService } from './services/auth-service';
 import { inject } from '@angular/core';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 export const authorizeInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-  const token = localStorage.getItem('accessToken');
+  const router = inject(Router);
 
-  if (token) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
+  const isLoginRequest = req.url.includes('/users/login');
+  const isRegisterRequest = req.url.includes('/users/register');
 
-  return next(req).pipe(
+  const apiRequest = req.url.startsWith('/api') || req.url.includes('/api/');
+  const requestWithCredentials = apiRequest
+    ? req.clone({ withCredentials: true })
+    : req;
+
+  return next(requestWithCredentials).pipe(
     catchError((error) => {
       if (error.status === 401) {
+        if (isLoginRequest || isRegisterRequest) {
+          return throwError(() => error);
+        }
 
-        return authService.refreshToken().pipe(
-          switchMap((tokens) => {
-            if (tokens) {
-              authService.storeTokens(tokens);
-              const newReq = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${tokens.accessToken}`
-                }
-              });
-              return next(newReq);
-            }
-            return throwError(()=>error);
-          })
-        );
+        router.navigate(['/login']);
       }
-      throw error;
+
+      return throwError(() => error);
     })
   );
 };

@@ -1,5 +1,5 @@
 <div class="flex h-screen items-center justify-center bg-base-200">
-  
+
   <div class="absolute top-4 left-4">
     <app-theme-switch-component></app-theme-switch-component>
   </div>
@@ -7,47 +7,53 @@
   <form [formGroup]="loginForm" (ngSubmit)="submit()" class="card w-full max-w-sm bg-base-100 shadow-xl">
     <div class="card-body">
       <h2 class="card-title text-2xl font-bold mb-4 text-base-content">Login</h2>
-      
+
       <div class="form-control mb-2">
-        <label class="label" for="email">
-          <span class="label-text font-bold">Email</span>
+        <label class="label" for="username">
+          <span class="label-text font-bold">Benutzername</span>
         </label>
-        <input formControlName="email" id="email" type="email" placeholder="Enter your email" class="input input-bordered w-full" />
-        
-        @if(loginForm.controls.email.invalid && loginForm.controls.email.touched) {
+        <input formControlName="username" id="username" type="text" placeholder="Benutzername eingeben" class="input input-bordered w-full" />
+
+        @if(loginForm.controls.username.invalid && loginForm.controls.username.touched) {
           <label class="label">
-            <span class="label-text-alt text-error italic">Please enter a valid email.</span>
+            <span class="label-text-alt text-error italic">Bitte gib einen gueltigen Benutzernamen ein.</span>
           </label>
         }
       </div>
-      
+
       <div class="form-control mb-6">
         <label class="label" for="password">
           <span class="label-text font-bold">Password</span>
         </label>
         <input formControlName="password" id="password" type="password" placeholder="Enter your password" class="input input-bordered w-full" />
-        
+
         @if(loginForm.controls.password.invalid && loginForm.controls.password.touched) {
           <label class="label">
             <span class="label-text-alt text-error italic">Please enter a valid password.</span>
           </label>
         }
       </div>
-      
+
+      @if(errorMessage) {
+        <div class="alert alert-error mb-4">
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
       <div class="flex items-center justify-between mb-4">
         <button type="submit" class="btn btn-primary">Login</button>
         <a [routerLink]="['/forgot-password']" class="link link-hover text-sm text-primary font-bold">Forgot Password?</a>
       </div>
-        
-      <div class="divider"></div> 
-      
+
+      <div class="divider"></div>
+
       <div class="text-center">
         <p class="text-sm text-base-content">
-          Don't have an account? 
+          Don't have an account?
           <a [routerLink]="['/register']" class="link link-primary font-bold">Register here</a>.
         </p>
       </div>
-      
+
     </div>
   </form>
 </div>
