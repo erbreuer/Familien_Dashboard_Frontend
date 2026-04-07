@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:5000",
+    "target": "pi.erikbreuer.de",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
