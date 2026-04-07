@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "pi.erikbreuer.de",
+    "target": "https://pi.erikbreuer.de",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
