@@ -9,7 +9,7 @@ export const authorizeInterceptor: HttpInterceptorFn = (req, next) => {
   const isLoginRequest = req.url.includes('/users/login');
   const isRegisterRequest = req.url.includes('/users/register');
 
-  const apiRequest = req.url.startsWith('/api') || req.url.includes('/api/');
+  const apiRequest = req.url.includes('/api');
   const requestWithCredentials = apiRequest
     ? req.clone({ withCredentials: true })
     : req;
