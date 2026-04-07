@@ -9,7 +9,7 @@ import { User } from '../interfaces/user';
   providedIn: 'root',
 })
 export class ProfileService {
-  private apiUrl = '/api';
+  private apiUrl = 'https://pi.erikbreuer.de/api';
 
   constructor(private http: HttpClient) {}
 

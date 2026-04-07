@@ -8,7 +8,7 @@ import { LoginResponse } from '../interfaces/login-response';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = '/api';
+  private apiUrl = 'https://pi.erikbreuer.de/api';
 
   constructor(private http: HttpClient) {}
 

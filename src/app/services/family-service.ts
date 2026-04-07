@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FamilyService {
 
-   private apiUrl = '/api';
+   private apiUrl = 'https://pi.erikbreuer.de/api';
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { WeatherResponse } from '../interfaces/weather';
   providedIn: 'root',
 })
 export class WeatherService {
-  private apiUrl = '/api';
+  private apiUrl = 'https://pi.erikbreuer.de/api';
 
   constructor(private http: HttpClient) {}
 

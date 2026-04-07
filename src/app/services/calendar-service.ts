@@ -27,7 +27,7 @@ export interface UpdateCalendarEventPayload {
   providedIn: 'root',
 })
 export class CalendarService {
-  private apiUrl = '/api/calendar';
+  private apiUrl = 'https://pi.erikbreuer.de/api/calendar';
 
   constructor(private http: HttpClient) {}
 
